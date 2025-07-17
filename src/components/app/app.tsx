@@ -9,6 +9,9 @@ import { Profile } from '../../pages/profile/profile';
 import { ProfileOrders } from '../../pages/profile-orders/profile-orders';
 import { NotFound404 } from '../../pages/not-fount-404/not-fount-404';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
+import { Modal } from '../modal/modal';
+import { OrderInfo } from '../order-info/order-info';
+import { IngredientDetails } from '../ingredient-details/ingredient-details';
 
 const App = () => (
   <BrowserRouter>
@@ -19,8 +22,51 @@ const App = () => (
       <Route path='/register' element={<Register />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />
       <Route path='/reset-password' element={<ResetPassword />} />
-      <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-      <Route path='/profile/orders' element={<ProtectedRoute><ProfileOrders /></ProtectedRoute>} />
+      <Route
+        path='/profile'
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/profile/orders'
+        element={
+          <ProtectedRoute>
+            <ProfileOrders />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/feed/:number'
+        element={
+          <Modal title='Детали заказа' onClose={() => window.history.back()}>
+            <OrderInfo />
+          </Modal>
+        }
+      />
+      <Route
+        path='/ingredients/:id'
+        element={
+          <Modal
+            title='Детали ингредиента'
+            onClose={() => window.history.back()}
+          >
+            <IngredientDetails />
+          </Modal>
+        }
+      />
+      <Route
+        path='/profile/orders/:number'
+        element={
+          <ProtectedRoute>
+            <Modal title='Детали заказа' onClose={() => window.history.back()}>
+              <OrderInfo />
+            </Modal>
+          </ProtectedRoute>
+        }
+      />
       <Route path='*' element={<NotFound404 />} />
     </Routes>
   </BrowserRouter>

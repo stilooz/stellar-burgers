@@ -10,7 +10,7 @@ const initialState = {
 const orderSlice = createSlice({
   name: 'order',
   initialState,
-  reducers: {},
+  reducers: {}
 });
 
-export const orderReducer = orderSlice.reducer; 
+export const orderReducer = orderSlice.reducer;

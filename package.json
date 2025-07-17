@@ -73,7 +73,7 @@
     "jest-css-modules-transform": "^4.4.2",
     "jest-environment-jsdom": "^29.7.0",
     "jsdom": "^23.0.1",
-    "prettier": "^3.1.1",
+    "prettier": "^3.6.2",
     "prettier-eslint": "^16.2.0",
     "prettier-eslint-cli": "^8.0.1",
     "react-test-renderer": "^18.2.0",

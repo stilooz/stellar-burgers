@@ -4,11 +4,13 @@ import { authReducer } from './slices/authSlice';
 import { orderReducer } from './slices/orderSlice';
 import { wsFeedReducer } from './slices/wsFeedSlice';
 import { wsProfileReducer } from './slices/wsProfileSlice';
+import { constructorReducer } from './slices/constructorSlice';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   auth: authReducer,
   order: orderReducer,
   wsFeed: wsFeedReducer,
-  wsProfile: wsProfileReducer
-}); 
+  wsProfile: wsProfileReducer,
+  constructor: constructorReducer
+});

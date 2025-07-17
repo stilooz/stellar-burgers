@@ -26,8 +26,13 @@ const wsFeedSlice = createSlice({
     setFeedError: (state) => {
       state.wsStatus = 'error';
     }
-  },
+  }
 });
 
-export const { connectFeedSocket, disconnectFeedSocket, setFeedData, setFeedError } = wsFeedSlice.actions;
-export const wsFeedReducer = wsFeedSlice.reducer; 
+export const {
+  connectFeedSocket,
+  disconnectFeedSocket,
+  setFeedData,
+  setFeedError
+} = wsFeedSlice.actions;
+export const wsFeedReducer = wsFeedSlice.reducer;

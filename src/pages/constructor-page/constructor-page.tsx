@@ -9,7 +9,9 @@ import { FC } from 'react';
 
 export const ConstructorPage: FC = () => {
   const dispatch = useDispatch();
-  const { items: ingredients, loading } = useSelector(state => state.ingredients);
+  const { items: ingredients, loading } = useSelector(
+    (state) => state.ingredients
+  );
 
   useEffect(() => {
     dispatch(fetchIngredients());

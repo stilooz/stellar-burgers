@@ -26,8 +26,13 @@ const wsProfileSlice = createSlice({
     setProfileError: (state) => {
       state.wsStatus = 'error';
     }
-  },
+  }
 });
 
-export const { connectProfileSocket, disconnectProfileSocket, setProfileData, setProfileError } = wsProfileSlice.actions;
-export const wsProfileReducer = wsProfileSlice.reducer; 
+export const {
+  connectProfileSocket,
+  disconnectProfileSocket,
+  setProfileData,
+  setProfileError
+} = wsProfileSlice.actions;
+export const wsProfileReducer = wsProfileSlice.reducer;
