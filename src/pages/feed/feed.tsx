@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   connectFeedSocket,
   disconnectFeedSocket
 } from '../../services/slices/wsFeedSlice';
+import { fetchFeeds } from '../../services/slices/feedsSlice';
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { FC } from 'react';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();
@@ -25,5 +25,9 @@ export const Feed: FC = () => {
     return <Preloader />;
   }
 
-  return <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  const handleGetFeeds = () => {
+    dispatch(fetchFeeds());
+  };
+
+  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
 };
