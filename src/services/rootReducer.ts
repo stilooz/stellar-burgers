@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { ingredientsReducer } from './slices/ingredientsSlice';
 import { authReducer } from './slices/authSlice';
 import { orderReducer } from './slices/orderSlice';
+import { feedsReducer } from './slices/feedsSlice';
 import { wsFeedReducer } from './slices/wsFeedSlice';
 import { wsProfileReducer } from './slices/wsProfileSlice';
 import { constructorReducer } from './slices/constructorSlice';
@@ -12,5 +13,6 @@ export const rootReducer = combineReducers({
   order: orderReducer,
   wsFeed: wsFeedReducer,
   wsProfile: wsProfileReducer,
-  constructor: constructorReducer
+  constructor: constructorReducer,
+  feeds: feedsReducer
 });
