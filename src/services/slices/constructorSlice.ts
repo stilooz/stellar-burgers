@@ -125,6 +125,6 @@ export const {
   handleCloseOrderModal
 } = constructorSlice.actions;
 
-// селекторы
-export const selectConstructor = (state: { constructor: ConstructorState }) =>
-  state.constructor;
+export const selectConstructor = (state: {
+  burgerConstructor: ConstructorState;
+}) => state.burgerConstructor;
