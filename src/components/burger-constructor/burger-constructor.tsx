@@ -15,11 +15,7 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = () => {
     if (!bun || orderRequest) return;
-    const ingredientIds = [
-      bun._id,
-      ...ingredients.map((i) => i._id),
-      bun._id
-    ];
+    const ingredientIds = [bun._id, ...ingredients.map((i) => i._id), bun._id];
     dispatch(orderConstructorBurgerApi(ingredientIds));
   };
   const closeOrderModal = () => {

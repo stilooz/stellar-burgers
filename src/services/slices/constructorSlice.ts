@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  nanoid,
+  PayloadAction
+} from '@reduxjs/toolkit';
 import { TIngredient, TConstructorIngredient, TOrder } from '@utils-types';
 import { orderBurgerApi } from '../../utils/burger-api';
 
@@ -55,10 +60,14 @@ const constructorSlice = createSlice({
       state.ingredients = [];
     },
     deleteItem: (state, action: PayloadAction<{ id: string }>) => {
-      state.ingredients = state.ingredients.filter((item) => item.id !== action.payload.id);
+      state.ingredients = state.ingredients.filter(
+        (item) => item.id !== action.payload.id
+      );
     },
     upItem: (state, action: PayloadAction<{ id: string }>) => {
-      const index = state.ingredients.findIndex((item) => item.id === action.payload.id);
+      const index = state.ingredients.findIndex(
+        (item) => item.id === action.payload.id
+      );
       if (index > 0) {
         [state.ingredients[index - 1], state.ingredients[index]] = [
           state.ingredients[index],
@@ -67,7 +76,9 @@ const constructorSlice = createSlice({
       }
     },
     downItem: (state, action: PayloadAction<{ id: string }>) => {
-      const index = state.ingredients.findIndex((item) => item.id === action.payload.id);
+      const index = state.ingredients.findIndex(
+        (item) => item.id === action.payload.id
+      );
       if (index < state.ingredients.length - 1) {
         [state.ingredients[index], state.ingredients[index + 1]] = [
           state.ingredients[index + 1],
@@ -115,4 +126,5 @@ export const {
 } = constructorSlice.actions;
 
 // селекторы
-export const selectConstructor = (state: { constructor: ConstructorState }) => state.constructor; 
+export const selectConstructor = (state: { constructor: ConstructorState }) =>
+  state.constructor;

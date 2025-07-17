@@ -59,4 +59,4 @@ const feedsSlice = createSlice({
 });
 
 export const feedsReducer = feedsSlice.reducer;
-export const selectFeeds = (state: { feeds: FeedsState }) => state.feeds; 
+export const selectFeeds = (state: { feeds: FeedsState }) => state.feeds;
