@@ -8,6 +8,7 @@ import { ResetPassword } from '../../pages/reset-password/reset-password';
 import { Profile } from '../../pages/profile/profile';
 import { ProfileOrders } from '../../pages/profile-orders/profile-orders';
 import { NotFound404 } from '../../pages/not-fount-404/not-fount-404';
+import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 
 const App = () => (
   <BrowserRouter>
@@ -18,8 +19,8 @@ const App = () => (
       <Route path='/register' element={<Register />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />
       <Route path='/reset-password' element={<ResetPassword />} />
-      <Route path='/profile' element={<Profile />} />
-      <Route path='/profile/orders' element={<ProfileOrders />} />
+      <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path='/profile/orders' element={<ProtectedRoute><ProfileOrders /></ProtectedRoute>} />
       <Route path='*' element={<NotFound404 />} />
     </Routes>
   </BrowserRouter>
