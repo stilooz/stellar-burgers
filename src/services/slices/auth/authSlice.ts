@@ -111,6 +111,9 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = false;
         state.authChecked = true;
+        state.user = null;
+        state.accessToken = null;
+        state.refreshToken = null;
       })
       .addCase(updateUser.pending, (state) => {
         state.loading = true;

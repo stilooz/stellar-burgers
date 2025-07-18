@@ -69,6 +69,8 @@ export const getUser = createAsyncThunk<TUser, void, { rejectValue: string }>(
       const data = await getUserApi();
       return data.user;
     } catch (error) {
+      deleteCookie('accessToken');
+      localStorage.removeItem('refreshToken');
       return rejectWithValue(
         error instanceof Error ? error.message : 'Ошибка получения пользователя'
       );
