@@ -8,10 +8,6 @@ export const FeedInfoUI: FC<FeedInfoUIProps> = memo(
   ({ feed, readyOrders, pendingOrders }) => {
     const { total, totalToday } = feed;
 
-    console.log('FeedInfoUI - feed:', feed);
-    console.log('FeedInfoUI - total:', total);
-    console.log('FeedInfoUI - totalToday:', totalToday);
-
     return (
       <section>
         <div className={styles.columns}>
@@ -20,7 +16,11 @@ export const FeedInfoUI: FC<FeedInfoUIProps> = memo(
             title={'Готовы'}
             textColor={'blue'}
           />
-          <HalfColumn orders={pendingOrders} title={'В работе'} />
+          <HalfColumn
+            orders={pendingOrders}
+            title={'В работе'}
+            textColor={'white'}
+          />
         </div>
         <Column title={'Выполнено за все время'} content={total} />
         <Column title={'Выполнено за сегодня'} content={totalToday} />

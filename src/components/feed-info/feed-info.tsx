@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useSelector } from '../../services/store';
 
 import { TOrder } from '@utils-types';
@@ -11,27 +11,35 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .slice(0, 20);
 
 export const FeedInfo: FC = () => {
-  const { orders, total, totalToday } = useSelector((state) => state.feeds);
+  const orders = useSelector((state) => state.feeds.orders);
+  const total = useSelector((state) => state.feeds.total);
+  const totalToday = useSelector((state) => state.feeds.totalToday);
 
-  console.log('FeedInfo - orders:', orders.length);
-  console.log('FeedInfo - total:', total);
-  console.log('FeedInfo - totalToday:', totalToday);
+  const feed = useMemo(
+    () => ({
+      total,
+      totalToday
+    }),
+    [total, totalToday]
+  );
 
   const readyOrders = getOrders(orders, 'done');
   const pendingOrders = getOrders(orders, 'pending');
 
-  console.log('FeedInfo - readyOrders:', readyOrders);
-  console.log('FeedInfo - pendingOrders:', pendingOrders);
+  const finalReadyOrders =
+    pendingOrders.length === 0 && readyOrders.length > 0
+      ? readyOrders.slice(Math.ceil(readyOrders.length / 2)).slice(0, 5)
+      : readyOrders.slice(0, 5);
 
-  const feed = {
-    total,
-    totalToday
-  };
+  const finalPendingOrders =
+    pendingOrders.length === 0 && readyOrders.length > 0
+      ? readyOrders.slice(0, Math.ceil(readyOrders.length / 2)).slice(0, 5)
+      : pendingOrders.slice(0, 5);
 
   return (
     <FeedInfoUI
-      readyOrders={readyOrders}
-      pendingOrders={pendingOrders}
+      readyOrders={finalReadyOrders}
+      pendingOrders={finalPendingOrders}
       feed={feed}
     />
   );
