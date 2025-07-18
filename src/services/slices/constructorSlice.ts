@@ -127,4 +127,4 @@ export const {
 
 export const selectConstructor = (state: {
   burgerConstructor: ConstructorState;
-}) => state.burgerConstructor;
+}) => state.burgerConstructor || initialState;
