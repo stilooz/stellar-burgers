@@ -10,6 +10,8 @@ import styles from './order-card.module.css';
 import { OrderCardUIProps } from './type';
 import { OrderStatus } from '@components';
 
+const INGREDIENT_OFFSET = 20;
+
 export const OrderCardUI: FC<OrderCardUIProps> = memo(
   ({ orderInfo, maxIngredients, locationState }) => (
     <Link
@@ -36,7 +38,7 @@ export const OrderCardUI: FC<OrderCardUIProps> = memo(
         <ul className={styles.ingredients}>
           {orderInfo.ingredientsToShow.map((ingredient, index) => {
             let zIndex = maxIngredients - index;
-            let right = 20 * index;
+            let right = INGREDIENT_OFFSET * index;
             return (
               <li
                 className={styles.img_wrap}

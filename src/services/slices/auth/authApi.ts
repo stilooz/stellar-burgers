@@ -80,7 +80,7 @@ export const getUser = createAsyncThunk<TUser, void, { rejectValue: string }>(
 
 export const updateUser = createAsyncThunk<
   TUser,
-  TRegisterData,
+  Partial<TRegisterData>,
   { rejectValue: string }
 >('auth/updateUser', async (userData, { rejectWithValue }) => {
   try {

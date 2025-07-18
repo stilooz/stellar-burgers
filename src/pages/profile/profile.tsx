@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from '../../services/store';
 import { updateUser } from '../../services/slices/auth/authApi';
 import { clearError } from '../../services/slices/auth/authSlice';
 import { ProfileUI } from '@ui-pages';
+import { TRegisterData } from '../../utils/burger-api';
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ export const Profile: FC = () => {
       return;
     }
 
-    const updateData: any = {
+    const updateData: Partial<TRegisterData> = {
       name: formValue.name,
       email: formValue.email
     };

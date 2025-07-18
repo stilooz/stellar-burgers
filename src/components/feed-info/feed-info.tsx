@@ -4,11 +4,13 @@ import { useSelector } from '../../services/store';
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
 
+const MAX_ORDERS_TO_SHOW = 20;
+
 const getOrders = (orders: TOrder[], status: string): number[] =>
   orders
     .filter((item) => item.status === status)
     .map((item) => item.number)
-    .slice(0, 20);
+    .slice(0, MAX_ORDERS_TO_SHOW);
 
 export const FeedInfo: FC = () => {
   const orders = useSelector((state) => state.feeds.orders);
