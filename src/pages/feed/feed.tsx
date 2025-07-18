@@ -11,17 +11,10 @@ export const Feed: FC = () => {
   const { orders, loading, error } = useSelector((state) => state.feeds);
 
   useEffect(() => {
-    console.log('Feed useEffect triggered');
-    console.log('Current orders:', orders);
     dispatch(fetchFeeds());
   }, [dispatch]);
 
-  console.log('Feed render - orders:', orders);
-  console.log('Feed render - loading:', loading);
-  console.log('Feed render - error:', error);
-
   const handleGetFeeds = () => {
-    console.log('Manual feed refresh triggered');
     dispatch(fetchFeeds());
   };
 

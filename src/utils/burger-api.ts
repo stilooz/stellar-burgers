@@ -89,7 +89,6 @@ export const getFeedsApi = () =>
 
 export const getOrdersApi = () => {
   const token = getCookie('accessToken');
-  console.log('getOrdersApi: Token from cookie:', token);
 
   return fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
     method: 'GET',
@@ -98,12 +97,9 @@ export const getOrdersApi = () => {
       authorization: token
     } as HeadersInit
   }).then((data) => {
-    console.log('getOrdersApi: Raw response:', data);
     if (data?.success) {
-      console.log('getOrdersApi: Orders received:', data.orders);
       return data.orders;
     }
-    console.error('getOrdersApi: Response not successful:', data);
     return Promise.reject(data);
   });
 };

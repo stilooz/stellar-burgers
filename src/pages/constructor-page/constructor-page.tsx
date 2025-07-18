@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from '../../services/store';
-import { fetchIngredients } from '../../services/slices/ingredients/ingredientsApi';
 import { getUser } from '../../services/slices/auth/authApi';
 
 import styles from './constructor-page.module.css';
@@ -19,8 +18,6 @@ export const ConstructorPage: FC = () => {
   const { authChecked = false } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchIngredients());
-
     if (!authChecked) {
       dispatch(getUser());
     }

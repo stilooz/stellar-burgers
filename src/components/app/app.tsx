@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch } from '../../services/store';
 import { getUser } from '../../services/slices/auth/authApi';
 import { setAuthChecked } from '../../services/slices/auth/authSlice';
+import { fetchIngredients } from '../../services/slices/ingredients/ingredientsApi';
 import { getCookie } from '../../utils/cookie';
 import {
   ConstructorPage,
@@ -26,6 +27,8 @@ const AppRoutes = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(fetchIngredients());
+
     const accessToken = getCookie('accessToken');
     if (accessToken) {
       dispatch(getUser());
