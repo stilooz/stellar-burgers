@@ -37,6 +37,9 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    setAuthChecked: (state, action) => {
+      state.authChecked = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.accessToken = null;
@@ -121,7 +124,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Ошибка обновления пользователя';
       })
-      // Восстановление пароля
       .addCase(forgotPassword.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -147,6 +149,6 @@ const authSlice = createSlice({
   }
 });
 
-export const { clearError, logout } = authSlice.actions;
+export const { clearError, setAuthChecked, logout } = authSlice.actions;
 
 export default authSlice.reducer;

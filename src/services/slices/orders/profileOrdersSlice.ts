@@ -20,9 +20,12 @@ export const fetchProfileOrders = createAsyncThunk<
   { rejectValue: string }
 >('profileOrders/fetchOrders', async (_, { rejectWithValue }) => {
   try {
+    console.log('fetchProfileOrders: Starting API request...');
     const orders = await getOrdersApi();
+    console.log('fetchProfileOrders: API response received:', orders);
     return orders;
   } catch (error) {
+    console.error('fetchProfileOrders: API error:', error);
     return rejectWithValue(
       error instanceof Error ? error.message : 'Ошибка загрузки заказов'
     );

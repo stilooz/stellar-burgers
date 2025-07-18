@@ -87,17 +87,26 @@ export const getFeedsApi = () =>
       return Promise.reject(data);
     });
 
-export const getOrdersApi = () =>
-  fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
+export const getOrdersApi = () => {
+  const token = getCookie('accessToken');
+  console.log('getOrdersApi: Token from cookie:', token);
+
+  return fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      authorization: getCookie('accessToken')
+      authorization: token
     } as HeadersInit
   }).then((data) => {
-    if (data?.success) return data.orders;
+    console.log('getOrdersApi: Raw response:', data);
+    if (data?.success) {
+      console.log('getOrdersApi: Orders received:', data.orders);
+      return data.orders;
+    }
+    console.error('getOrdersApi: Response not successful:', data);
     return Promise.reject(data);
   });
+};
 
 type TNewOrderResponse = TServerResponse<{
   order: TOrder;

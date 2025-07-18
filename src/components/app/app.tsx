@@ -1,4 +1,9 @@
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from '../../services/store';
+import { getUser } from '../../services/slices/auth/authApi';
+import { setAuthChecked } from '../../services/slices/auth/authSlice';
+import { getCookie } from '../../utils/cookie';
 import {
   ConstructorPage,
   Feed,
@@ -18,6 +23,16 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 const AppRoutes = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      dispatch(getUser());
+    } else {
+      dispatch(setAuthChecked(true));
+    }
+  }, [dispatch]);
 
   const handleCloseModal = () => {
     navigate(-1);
@@ -77,6 +92,7 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='*' element={<NotFound404 />} />
 
         <Route
           path='/ingredients/:id'
@@ -89,7 +105,7 @@ const AppRoutes = () => {
         <Route
           path='/feed/:number'
           element={
-            <Modal title='Детали заказа' onClose={handleCloseModal}>
+            <Modal title='Информация о заказе' onClose={handleCloseModal}>
               <OrderInfo />
             </Modal>
           }
@@ -98,14 +114,12 @@ const AppRoutes = () => {
           path='/profile/orders/:number'
           element={
             <ProtectedRoute>
-              <Modal title='Детали заказа' onClose={handleCloseModal}>
+              <Modal title='Информация о заказе' onClose={handleCloseModal}>
                 <OrderInfo />
               </Modal>
             </ProtectedRoute>
           }
         />
-
-        <Route path='*' element={<NotFound404 />} />
       </Routes>
     </>
   );
