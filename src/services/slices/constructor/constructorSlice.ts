@@ -28,39 +28,47 @@ const constructorSlice = createSlice({
   name: 'constructor',
   initialState,
   reducers: {
-    addIngredient: (state, action: PayloadAction<TIngredient>) => {
-      const ingredient = action.payload;
+    addIngredient: {
+      reducer: (
+        state,
+        action: PayloadAction<TIngredient & { uniqueId: string }>
+      ) => {
+        const ingredient = action.payload;
 
-      if (typeof state.totalPrice !== 'number' || isNaN(state.totalPrice)) {
-        state.totalPrice = 0;
-      }
+        if (typeof state.totalPrice !== 'number' || isNaN(state.totalPrice)) {
+          state.totalPrice = 0;
+        }
 
-      if (!Array.isArray(state.ingredients)) {
-        state.ingredients = [];
-      }
+        if (!Array.isArray(state.ingredients)) {
+          state.ingredients = [];
+        }
 
-      const constructorIngredient: TConstructorIngredient = {
-        ...ingredient,
-        id: nanoid()
-      };
-
-      if (ingredient.type === 'bun') {
-        return {
-          ...state,
-          bun: constructorIngredient,
-          totalPrice: calculateTotalPrice(
-            constructorIngredient,
-            state.ingredients
-          )
+        const constructorIngredient: TConstructorIngredient = {
+          ...ingredient,
+          id: ingredient.uniqueId
         };
-      } else {
-        const newIngredients = [...state.ingredients, constructorIngredient];
-        return {
-          ...state,
-          ingredients: newIngredients,
-          totalPrice: calculateTotalPrice(state.bun, newIngredients)
-        };
-      }
+
+        if (ingredient.type === 'bun') {
+          return {
+            ...state,
+            bun: constructorIngredient,
+            totalPrice: calculateTotalPrice(
+              constructorIngredient,
+              state.ingredients
+            )
+          };
+        } else {
+          const newIngredients = [...state.ingredients, constructorIngredient];
+          return {
+            ...state,
+            ingredients: newIngredients,
+            totalPrice: calculateTotalPrice(state.bun, newIngredients)
+          };
+        }
+      },
+      prepare: (ingredient: TIngredient) => ({
+        payload: { ...ingredient, uniqueId: nanoid() }
+      })
     },
     removeIngredient: (state, action: PayloadAction<string>) => {
       if (!Array.isArray(state.ingredients)) {
