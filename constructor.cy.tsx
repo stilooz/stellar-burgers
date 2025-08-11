@@ -33,15 +33,27 @@ describe('Конструктор бургера', () => {
 
   describe('Добавление ингредиентов в конструктор', () => {
     it('должен добавлять булку в конструктор', () => {
+      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
+      cy.get('[data-cy="constructor-bun-bottom"]').should('not.exist');
+      cy.get('[data-cy="total-price"]').should('contain', '0');
+
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
 
       cy.get('[data-cy="constructor-bun-top"]').should('be.visible');
       cy.get('[data-cy="constructor-bun-bottom"]').should('be.visible');
-
       cy.get('[data-cy="total-price"]').should('not.contain', '0');
     });
 
     it('должен добавлять начинку в конструктор', () => {
+      cy.get('[data-cy="constructor-ingredients"]').should(
+        'not.contain',
+        testData.names.mainName
+      );
+      cy.get('[data-cy="ingredient-main"]')
+        .first()
+        .find('[data-cy="ingredient-count"]')
+        .should('not.exist');
+
       cy.get('[data-cy="ingredient-main"]')
         .first()
         .contains('Добавить')
@@ -51,7 +63,6 @@ describe('Конструктор бургера', () => {
         'contain',
         testData.names.mainName
       );
-
       cy.get('[data-cy="ingredient-main"]')
         .first()
         .find('[data-cy="ingredient-count"]')
@@ -59,6 +70,15 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен добавлять соус в конструктор', () => {
+      cy.get('[data-cy="constructor-ingredients"]').should(
+        'not.contain',
+        testData.names.sauceName
+      );
+      cy.get('[data-cy="ingredient-sauce"]')
+        .first()
+        .find('[data-cy="ingredient-count"]')
+        .should('not.exist');
+
       cy.get('[data-cy="ingredient-sauce"]')
         .first()
         .contains('Добавить')
@@ -68,7 +88,6 @@ describe('Конструктор бургера', () => {
         'contain',
         testData.names.sauceName
       );
-
       cy.get('[data-cy="ingredient-sauce"]')
         .first()
         .find('[data-cy="ingredient-count"]')
@@ -76,7 +95,13 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен заменять булку при добавлении новой', () => {
+      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
+      cy.get('[data-cy="constructor-bun-bottom"]').should('not.exist');
+
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
+
+      cy.get('[data-cy="constructor-bun-top"]').should('have.length', 1);
+      cy.get('[data-cy="constructor-bun-bottom"]').should('have.length', 1);
 
       cy.get('[data-cy="ingredient-bun"]').eq(1).contains('Добавить').click();
 
@@ -98,6 +123,19 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен удалять ингредиент из конструктора', () => {
+      cy.get('[data-cy="constructor-ingredients"]').should(
+        'contain',
+        testData.names.mainName
+      );
+      cy.get('[data-cy="ingredient-main"]')
+        .first()
+        .find('[data-cy="ingredient-count"]')
+        .should('exist');
+      cy.get('[data-cy="constructor-element"]').should(
+        'have.length.at.least',
+        1
+      );
+
       cy.get('[data-cy="constructor-element"]')
         .first()
         .find('[data-cy="delete-ingredient"]')
@@ -107,7 +145,6 @@ describe('Конструктор бургера', () => {
         'not.contain',
         testData.names.mainName
       );
-
       cy.get('[data-cy="ingredient-main"]')
         .first()
         .find('[data-cy="ingredient-count"]')
@@ -115,8 +152,15 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен обновлять общую стоимость после удаления', () => {
+      cy.get('[data-cy="constructor-element"]').should(
+        'have.length.at.least',
+        1
+      );
+
       cy.get('[data-cy="total-price"]').then(($price) => {
         const initialPrice = parseInt($price.text());
+
+        expect(initialPrice).to.be.greaterThan(0);
 
         cy.get('[data-cy="constructor-element"]')
           .first()
@@ -200,14 +244,25 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен создавать заказ для авторизованного пользователя', () => {
+      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
+      cy.get('[data-cy="constructor-element"]').should('not.exist');
+      cy.get('[data-cy="order-details"]').should('not.exist');
+      cy.get('[data-cy="order-button"]').should('be.disabled');
+
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
       cy.get('[data-cy="ingredient-main"]')
         .first()
         .contains('Добавить')
         .click();
 
-      cy.get('[data-cy="order-button"]').should('not.be.disabled').click();
+      cy.get('[data-cy="constructor-bun-top"]').should('be.visible');
+      cy.get('[data-cy="constructor-element"]').should(
+        'have.length.at.least',
+        1
+      );
+      cy.get('[data-cy="order-button"]').should('not.be.disabled');
 
+      cy.get('[data-cy="order-button"]').click();
       cy.wait('@createOrder');
 
       cy.get('[data-cy="order-details"]').should('be.visible');
@@ -215,11 +270,22 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен очищать конструктор после успешного заказа', () => {
+      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
+      cy.get('[data-cy="constructor-element"]').should('not.exist');
+      cy.get('[data-cy="total-price"]').should('contain', '0');
+
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
       cy.get('[data-cy="ingredient-main"]')
         .first()
         .contains('Добавить')
         .click();
+
+      cy.get('[data-cy="constructor-bun-top"]').should('be.visible');
+      cy.get('[data-cy="constructor-element"]').should(
+        'have.length.at.least',
+        1
+      );
+      cy.get('[data-cy="total-price"]').should('not.contain', '0');
 
       cy.get('[data-cy="order-button"]').click();
       cy.wait('@createOrder');
@@ -233,23 +299,40 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен блокировать кнопку заказа без булки', () => {
+      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
+      cy.get('[data-cy="constructor-element"]').should('not.exist');
+      cy.get('[data-cy="order-button"]').should('be.disabled');
+
       cy.get('[data-cy="ingredient-main"]')
         .first()
         .contains('Добавить')
         .click();
 
+      cy.get('[data-cy="constructor-element"]').should(
+        'have.length.at.least',
+        1
+      );
+      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
       cy.get('[data-cy="order-button"]').should('be.disabled');
     });
 
     it('должен блокировать кнопку заказа без начинки', () => {
+      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
+      cy.get('[data-cy="constructor-element"]').should('not.exist');
+      cy.get('[data-cy="order-button"]').should('be.disabled');
+
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
 
+      cy.get('[data-cy="constructor-bun-top"]').should('be.visible');
+      cy.get('[data-cy="constructor-element"]').should('not.exist');
       cy.get('[data-cy="order-button"]').should('be.disabled');
     });
   });
 
   describe('Подсчет стоимости', () => {
     it('должен правильно подсчитывать стоимость бургера', () => {
+      cy.get('[data-cy="total-price"]').should('contain', '0');
+
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
 
       cy.get('[data-cy="total-price"]').should(
@@ -279,6 +362,8 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен обновлять стоимость при замене булки', () => {
+      cy.get('[data-cy="total-price"]').should('contain', '0');
+
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
       const firstBunPrice = testData.prices.bunTotalPrice;
 
@@ -293,11 +378,15 @@ describe('Конструктор бургера', () => {
         'not.contain',
         firstBunPrice.toString()
       );
+      cy.get('[data-cy="total-price"]').should('not.contain', '0');
     });
   });
 
   describe('Модальные окна', () => {
     it('должен открывать модальное окно с деталями ингредиента', () => {
+      cy.get('[data-cy="ingredient-details"]').should('not.exist');
+      cy.get('[data-cy="modal-title"]').should('not.exist');
+
       cy.get('[data-cy="ingredient-bun"]').first().click();
 
       cy.get('[data-cy="ingredient-details"]').should('be.visible');
@@ -305,26 +394,35 @@ describe('Конструктор бургера', () => {
     });
 
     it('должен закрывать модальное окно по клику на крестик', () => {
+      cy.get('[data-cy="ingredient-details"]').should('not.exist');
+
       cy.get('[data-cy="ingredient-bun"]').first().click();
       cy.get('[data-cy="ingredient-details"]').should('be.visible');
 
       cy.get('[data-cy="close-modal"]').click();
+
       cy.get('[data-cy="ingredient-details"]').should('not.exist');
     });
 
     it('должен закрывать модальное окно по клику на оверлей', () => {
+      cy.get('[data-cy="ingredient-details"]').should('not.exist');
+
       cy.get('[data-cy="ingredient-bun"]').first().click();
       cy.get('[data-cy="ingredient-details"]').should('be.visible');
 
       cy.get('[data-cy="modal-overlay"]').click({ force: true });
+
       cy.get('[data-cy="ingredient-details"]').should('not.exist');
     });
 
     it('должен закрывать модальное окно по нажатию Escape', () => {
+      cy.get('[data-cy="ingredient-details"]').should('not.exist');
+
       cy.get('[data-cy="ingredient-bun"]').first().click();
       cy.get('[data-cy="ingredient-details"]').should('be.visible');
 
       cy.get('body').type('{esc}');
+
       cy.get('[data-cy="ingredient-details"]').should('not.exist');
     });
   });
