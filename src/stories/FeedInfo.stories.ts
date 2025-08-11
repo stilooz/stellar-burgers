@@ -18,21 +18,8 @@ type Story = StoryObj<typeof meta>;
 export const DefaultFeedInfo: Story = {
   args: {
     feed: {
-      orders: [
-        {
-          _id: '11111',
-          status: 'ready',
-          name: 'Burger',
-          createdAt: '',
-          updatedAt: '',
-          number: 123,
-          ingredients: ['Булка', 'Начинка']
-        }
-      ],
-      total: 12,
-      totalToday: 2,
-      isLoading: false,
-      error: null
+      total: 84311,
+      totalToday: 64
     },
     readyOrders: [123, 124, 125],
     pendingOrders: [126, 127]
