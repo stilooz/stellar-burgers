@@ -391,6 +391,89 @@ describe('Конструктор бургера', () => {
 
       cy.get('[data-cy="ingredient-details"]').should('be.visible');
       cy.get('[data-cy="modal-title"]').should('contain', 'Детали ингредиента');
+
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.bun.name
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.bun.calories
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.bun.proteins
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.bun.fat
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.bun.carbohydrates
+      );
+    });
+
+    it('должен открывать модальное окно с деталями начинки', () => {
+      cy.get('[data-cy="ingredient-details"]').should('not.exist');
+      cy.get('[data-cy="modal-title"]').should('not.exist');
+
+      cy.get('[data-cy="ingredient-main"]').first().click();
+
+      cy.get('[data-cy="ingredient-details"]').should('be.visible');
+      cy.get('[data-cy="modal-title"]').should('contain', 'Детали ингредиента');
+
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.main.name
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.main.calories
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.main.proteins
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.main.fat
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.main.carbohydrates
+      );
+    });
+
+    it('должен открывать модальное окно с деталями соуса', () => {
+      cy.get('[data-cy="ingredient-details"]').should('not.exist');
+      cy.get('[data-cy="modal-title"]').should('not.exist');
+
+      cy.get('[data-cy="ingredient-sauce"]').first().click();
+
+      cy.get('[data-cy="ingredient-details"]').should('be.visible');
+      cy.get('[data-cy="modal-title"]').should('contain', 'Детали ингредиента');
+
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.sauce.name
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.sauce.calories
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.sauce.proteins
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.sauce.fat
+      );
+      cy.get('[data-cy="ingredient-details"]').should(
+        'contain',
+        testData.ingredients.sauce.carbohydrates
+      );
     });
 
     it('должен закрывать модальное окно по клику на крестик', () => {
