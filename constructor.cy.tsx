@@ -1,45 +1,11 @@
 describe('Конструктор бургера', () => {
-  const MOCK_INGREDIENTS = {
-    bun: {
-      _id: '643d69a5c3f7b9001cfa093c',
-      name: 'Краторная булка N-200i',
-      type: 'bun',
-      proteins: 80,
-      fat: 24,
-      carbohydrates: 53,
-      calories: 420,
-      price: 1255,
-      image: 'https://code.s3.yandex.net/react/code/bun-02.png',
-      image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
-      image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png'
-    },
-    main: {
-      _id: '643d69a5c3f7b9001cfa0941',
-      name: 'Биокотлета из марсианской Магнолии',
-      type: 'main',
-      proteins: 420,
-      fat: 142,
-      carbohydrates: 242,
-      calories: 4242,
-      price: 424,
-      image: 'https://code.s3.yandex.net/react/code/meat-01.png',
-      image_mobile: 'https://code.s3.yandex.net/react/code/meat-01-mobile.png',
-      image_large: 'https://code.s3.yandex.net/react/code/meat-01-large.png'
-    },
-    sauce: {
-      _id: '643d69a5c3f7b9001cfa0942',
-      name: 'Соус Spicy-X',
-      type: 'sauce',
-      proteins: 30,
-      fat: 20,
-      carbohydrates: 40,
-      calories: 30,
-      price: 90,
-      image: 'https://code.s3.yandex.net/react/code/sauce-02.png',
-      image_mobile: 'https://code.s3.yandex.net/react/code/sauce-02-mobile.png',
-      image_large: 'https://code.s3.yandex.net/react/code/sauce-02-large.png'
-    }
-  };
+  let testData: any;
+
+  before(() => {
+    cy.fixture('testData').then((data) => {
+      testData = data;
+    });
+  });
 
   beforeEach(() => {
     cy.intercept('GET', '**/api/ingredients', {
@@ -83,7 +49,7 @@ describe('Конструктор бургера', () => {
 
       cy.get('[data-cy="constructor-ingredients"]').should(
         'contain',
-        'Биокотлета из марсианской Магнолии'
+        testData.names.mainName
       );
 
       cy.get('[data-cy="ingredient-main"]')
@@ -100,7 +66,7 @@ describe('Конструктор бургера', () => {
 
       cy.get('[data-cy="constructor-ingredients"]').should(
         'contain',
-        'Соус Spicy-X'
+        testData.names.sauceName
       );
 
       cy.get('[data-cy="ingredient-sauce"]')
@@ -139,7 +105,7 @@ describe('Конструктор бургера', () => {
 
       cy.get('[data-cy="constructor-ingredients"]').should(
         'not.contain',
-        'Биокотлета из марсианской Магнолии'
+        testData.names.mainName
       );
 
       cy.get('[data-cy="ingredient-main"]')
@@ -286,26 +252,35 @@ describe('Конструктор бургера', () => {
     it('должен правильно подсчитывать стоимость бургера', () => {
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
 
-      cy.get('[data-cy="total-price"]').should('contain', '2510');
+      cy.get('[data-cy="total-price"]').should(
+        'contain',
+        testData.prices.bunTotalPrice.toString()
+      );
 
       cy.get('[data-cy="ingredient-main"]')
         .first()
         .contains('Добавить')
         .click();
 
-      cy.get('[data-cy="total-price"]').should('contain', '2934');
+      cy.get('[data-cy="total-price"]').should(
+        'contain',
+        testData.prices.bunWithMainPrice.toString()
+      );
 
       cy.get('[data-cy="ingredient-sauce"]')
         .first()
         .contains('Добавить')
         .click();
 
-      cy.get('[data-cy="total-price"]').should('contain', '3024');
+      cy.get('[data-cy="total-price"]').should(
+        'contain',
+        testData.prices.fullBurgerPrice.toString()
+      );
     });
 
     it('должен обновлять стоимость при замене булки', () => {
       cy.get('[data-cy="ingredient-bun"]').first().contains('Добавить').click();
-      const firstBunPrice = 1255 * 2;
+      const firstBunPrice = testData.prices.bunTotalPrice;
 
       cy.get('[data-cy="total-price"]').should(
         'contain',
